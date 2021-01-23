@@ -1,6 +1,6 @@
 import './App.css';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import List from './List';
 import Details from './Details';
@@ -16,6 +16,7 @@ function App() {
   const [char, setChar] = useState(null);
   const [page, setPage] = useState(1);
   
+
   async function retrieveCharacters() {
     const charactrsFromApi = await getCharacterList(page);
     setCharacters(charactrsFromApi);
@@ -23,19 +24,23 @@ function App() {
 
   function prev() {
     setPage(page - 1);
-    setCharacters([]);
-    setChar(null);
+    /* setCharacters([]); */
+    /* setChar(null) */
   }
   function next() {
     setPage(page + 1);
-    setCharacters([]);
-    setChar(null);
+    /* setCharacters([]); */
+    /* setChar(null) */
   }
   
   async function chooseCharacter(url) {
     const character = await getCharacter(url);
     setChar(character);
   }
+
+  useEffect(() => {
+    retrieveCharacters()
+  }, [page]);
   
   return (
     <div className="App">
@@ -44,10 +49,7 @@ function App() {
         :
                <button disabled onClick={prev}>prev</button>
       }
-      <button onClick={retrieveCharacters}>
-        Get Page {page} of Characters
-      </button>    
-      <button onClick={next}>next</button>
+      <button onClick={next}>next</button>      
       { characters.length > 0 &&
         <nav>
           <List
